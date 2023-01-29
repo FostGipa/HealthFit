@@ -4,6 +4,7 @@ from kivy.lang import Builder
 from kivy.core.window import Window
 from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.floatlayout import MDFloatLayout
+from kivymd.uix.pickers import MDDatePicker
 
 Window.size = (310, 580)
 
@@ -41,8 +42,62 @@ ScreenManager:
                     font_name: "Poppins-Regular.ttf"
                     md_bg_color: C("#92A3FD")
                     on_press:
-                        scr1.current = "main"
-                
+                        scr1.current = "start"
+    MDScreen:
+        name: "start"
+        MDBoxLayout:
+            orientation: "vertical"
+            MDBoxLayout:
+                orientation: "vertical"
+                MDRectangleFlatIconButton:
+                    pos_hint: {"center_x": .5}
+                    id: btn
+                    icon: "account-multiple-outline"
+                    icon_color: C("#ADA4A5")
+                    text: 'Выберите пол'
+                    text_color: C("#ADA4A5")
+                    halign: 'left'
+                    on_release: dropdown.open(self)
+                    size_hint_x: .9
+                    line_color: C("#ADA4A5")
+                Widget:
+                    on_parent: dropdown.dismiss()
+                DropDown:
+                    id: dropdown
+                    on_select: btn.text = '{}'.format(args[1])
+                    MDRectangleFlatButton:
+                        text: 'Мужской'
+                        size_hint_x: .5
+                        halign: 'left'
+                        line_color: C("#ADA4A5")
+                        icon_color: C("#ADA4A5")
+                        text_color: C("#ADA4A5")
+                        on_release: dropdown.select('Мужской')
+                    MDRectangleFlatButton:
+                        text: 'Женский'
+                        size_hint_x: .5
+                        halign: 'left'
+                        line_color: C("#ADA4A5")
+                        icon_color: C("#ADA4A5")
+                        text_color: C("#ADA4A5")
+                        on_release: dropdown.select('Женский')  
+            MDRectangleFlatIconButton:
+                pos_hint: {"center_x": .5}
+                id: btn2
+                icon: "calendar-range"
+                icon_color: C("#ADA4A5")
+                text: 'Дата рождения'
+                text_color: C("#ADA4A5")
+                halign: 'left'
+                on_release: app.show_date_picker()
+                size_hint_x: .9
+                line_color: C("#ADA4A5")
+            MDTextField:
+                hint_text: "Rectangle mode"
+                mode: "rectangle"
+                size_hint_x: .9
+                pos_hint: {"center_x": .5}
+            Widget:
     MDScreen:
         name: "main"
         MDFloatLayout:
@@ -130,9 +185,6 @@ ScreenManager:
                         on_release:
                             scr.current = "settings"
                             app.change_color(self)
-
-
-    
 """
 
 
@@ -141,6 +193,7 @@ class NavBar(FakeRectangularElevationBehavior, MDFloatLayout):
 
 
 class MyApp(MDApp):
+
     def build(self):
         return Builder.load_string(KV)
 
@@ -148,10 +201,20 @@ class MyApp(MDApp):
         if instance in self.root.ids.values():
             current_id = list(self.root.ids.keys())[list(self.root.ids.values()).index(instance)]
             for i in range(4):
-                if f"nav_icon{i+1}" == current_id:
-                    self.root.ids[f"nav_icon{i+1}"].text_color = utils.get_color_from_hex('#92A3FD')
+                if f"nav_icon{i + 1}" == current_id:
+                    self.root.ids[f"nav_icon{i + 1}"].text_color = utils.get_color_from_hex('#92A3FD')
                 else:
                     self.root.ids[f"nav_icon{i + 1}"].text_color = 0, 0, 0, 1
+
+    def show_date_picker(self):
+        date_dialog = MDDatePicker(primary_color=utils.get_color_from_hex('#92A3FD'),
+                                   text_button_color=utils.get_color_from_hex('#92A3FD'),
+                                   selector_color=utils.get_color_from_hex('#92A3FD'))
+        date_dialog.open()
+        date_dialog.bind(on_save=self.on_save)
+
+    def on_save(self, instance1, value, date_range):
+        self.root.ids.btn2.text = str(value)
 
 
 MyApp().run()
