@@ -53,13 +53,13 @@ ScreenManager:
                     pos_hint: {"center_x": .5}
                     id: btn
                     icon: "account-multiple-outline"
-                    icon_color: C("#ADA4A5")
+                    icon_color: C('#92A3FD')
                     text: 'Выберите пол'
-                    text_color: C("#ADA4A5")
+                    text_color: C('#92A3FD')
                     halign: 'left'
                     on_release: dropdown.open(self)
                     size_hint_x: .9
-                    line_color: C("#ADA4A5")
+                    line_color: C('#92A3FD')
                 Widget:
                     on_parent: dropdown.dismiss()
                 DropDown:
@@ -69,34 +69,68 @@ ScreenManager:
                         text: 'Мужской'
                         size_hint_x: .5
                         halign: 'left'
-                        line_color: C("#ADA4A5")
-                        icon_color: C("#ADA4A5")
-                        text_color: C("#ADA4A5")
+                        line_color: C('#92A3FD')
+                        text_color: C('#92A3FD')
                         on_release: dropdown.select('Мужской')
                     MDRectangleFlatButton:
                         text: 'Женский'
                         size_hint_x: .5
                         halign: 'left'
-                        line_color: C("#ADA4A5")
-                        icon_color: C("#ADA4A5")
-                        text_color: C("#ADA4A5")
+                        line_color: C('#92A3FD')
+                        text_color: C('#92A3FD')
                         on_release: dropdown.select('Женский')  
             MDRectangleFlatIconButton:
                 pos_hint: {"center_x": .5}
                 id: btn2
                 icon: "calendar-range"
-                icon_color: C("#ADA4A5")
+                icon_color: C('#92A3FD')
                 text: 'Дата рождения'
-                text_color: C("#ADA4A5")
+                text_color: C('#92A3FD')
                 halign: 'left'
                 on_release: app.show_date_picker()
                 size_hint_x: .9
-                line_color: C("#ADA4A5")
-            MDTextField:
-                hint_text: "Rectangle mode"
-                mode: "rectangle"
+                line_color: C('#92A3FD')
+            MDBoxLayout:
                 size_hint_x: .9
                 pos_hint: {"center_x": .5}
+                size_hint_y: .2
+                spacing: 10
+                MDTextField:
+                    line_color: C('#92A3FD')
+                    icon_color: C('#92A3FD')
+                    text_color: C('#92A3FD')
+                    icon_left: "weight"
+                    hint_text: "Вес"
+                    size_hint_x: .8
+                    mode: "rectangle"
+                MDBoxLayout:
+                    line_color: C('#92A3FD')
+                    pos_hint: {"center_x": .5}
+                    size_hint_x: .3
+                    orientation: "vertical"
+                    MDRectangleFlatButton:
+                        id: btn1
+                        text: 'кг'
+                        text_color: C('#92A3FD')
+                        on_release: dropdown1.open(self)
+                        line_color: C('#92A3FD')
+                    Widget:
+                        on_parent: dropdown1.dismiss()
+                    DropDown:
+                        id: dropdown1
+                        on_select: btn1.text = '{}'.format(args[1])
+                        MDRectangleFlatButton:
+                            text: 'фунт'
+                            line_color: C('#92A3FD')
+                            text_color: C('#92A3FD')
+                            on_release: dropdown1.select('фунт')
+                        MDRectangleFlatButton:
+                            text: 'паунд'
+                            line_color: C('#92A3FD')
+                            text_color: C('#92A3FD')
+                            on_release: dropdown1.select('паунд')  
+                    
+                
             Widget:
     MDScreen:
         name: "main"
